@@ -1,11 +1,13 @@
 #include "sinet/common.h"
 #include "sinet/buffer.h"
+#include "sinet/eventloop.h"
 
 int main(int argc, char const *argv[])
 {
-    sinet::Buffer buffer;
-    buffer.alloc(10);
-    buffer.appendData('f');
-    printf("write position = %zu\n", buffer.writePosition());
+    sinet::UNUSED(argc);
+    sinet::UNUSED(argv);
+    sinet::EventLoop loop;
+    loop.init();
+    loop.run();
     return 0;
 }

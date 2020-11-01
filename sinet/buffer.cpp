@@ -21,6 +21,7 @@ void Buffer::alloc(size_t n)
 size_t Buffer::writePosition()
 {
     assert(dataLength > writeIndex);
+    assert(readIndex <= writeIndex);
     return writeIndex;
 }
 

@@ -6,7 +6,7 @@ set(CXX_FLAGS
     -Wall
     -Wextra
     -Werror
-    -std=c++11
+    -std=c++17
 )
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   list(APPEND CXX_FLAGS "-Wno-null-dereference")
@@ -14,6 +14,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   list(APPEND CXX_FLAGS "-Wno-unused-local-typedef")
   list(APPEND CXX_FLAGS "-Wthread-safety")
 endif()
+string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CXX_FLAGS}")
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
@@ -25,3 +26,5 @@ add_subdirectory(sinet)
 # uncomment when test
 add_executable(sinet_test test/test.cpp)
 target_link_libraries(sinet_test sinet)
+
+message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_TYPE}})
