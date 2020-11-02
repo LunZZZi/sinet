@@ -8,14 +8,13 @@ namespace sinet
 
 void EventLoop::init()
 {
-    Buffer* buffer = new Buffer();
-    Channel* channel = new Channel(this, buffer);
+    std::unique_ptr<Channel> channel = std::make_unique<Channel>(this, std::make_unique<Buffer>());
     channel->setServerChannel();
     channel->bind(9877);
     channel->listen();
     channel->setEvents(POLLRDNORM);
-    selector = new Selector(this);
-    addChannel(channel->getDescriptor(), channel);
+    selector = std::make_unique<Selector>(this);
+    addChannel(channel->getDescriptor(), std::move(channel));
 }
 
 void EventLoop::run()
@@ -27,14 +26,15 @@ void EventLoop::run()
 
 void EventLoop::dispatch(int fd, int revents)
 {
-    Channel* ch = channels[fd];
-    ch->handle(revents);
+    Channel& ch = *channels[fd];
+    ch.handle(revents);
 }
 
-void EventLoop::addChannel(int fd, Channel* ch)
+void EventLoop::addChannel(int fd, std::unique_ptr<Channel> ch)
 {
-    channels[fd] = ch;
-    selector->add(fd, ch->getEvents());
+    int events = ch->getEvents();
+    channels[fd] = std::move(ch);
+    selector->add(fd, events);
 }
 
 void EventLoop::removeChannel(int fd)

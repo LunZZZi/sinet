@@ -1,15 +1,18 @@
 #ifndef __CHANNEL_H__
 #define __CHANNEL_H__
 
+#include <memory>
+#include "buffer.h"
+
 namespace sinet
 {
 
 class EventLoop;
-class Buffer;
 
 class Channel {
 public:
-    Channel(EventLoop* loop, Buffer* buf): eventLoop(loop), serverChannel(false), buffer(buf) {}
+    Channel(EventLoop* loop, std::unique_ptr<Buffer> buf)
+        : eventLoop(loop), serverChannel(false), buffer(std::move(buf)) {}
     void bind(int port);
     void listen();
     void accept();
@@ -26,7 +29,7 @@ private:
     int events;
     EventLoop* eventLoop;
     bool serverChannel;
-    Buffer* buffer;
+    std::unique_ptr<Buffer> buffer;
 };
 
 } // namespace sinet

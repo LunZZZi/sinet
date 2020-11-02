@@ -2,6 +2,7 @@
 #include "common.h"
 #include "channel.h"
 #include "log.h"
+#include "eventloop.h"
 #include <vector>
 
 namespace sinet {

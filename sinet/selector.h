@@ -1,12 +1,13 @@
 #ifndef __SELECTOR_H__
 #define __SELECTOR_H__
 
-#include "eventloop.h"
 #include <vector>
 #include <poll.h>
 
 namespace sinet
 {
+
+class EventLoop;
 
 class Selector {
 public:

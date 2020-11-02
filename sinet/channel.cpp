@@ -56,11 +56,10 @@ void Channel::handle(int revents)
         }
 
         debug("open connfd %d\n", connfd);
-        Buffer* buffer = new Buffer();
-        Channel* ch = new Channel(eventLoop, buffer);
+        std::unique_ptr<Channel> ch = std::make_unique<Channel>(eventLoop, std::make_unique<Buffer>());
         ch->setDescriptor(connfd);
         ch->setEvents(POLLRDNORM);
-        eventLoop->addChannel(connfd, ch);
+        eventLoop->addChannel(connfd, std::move(ch));
     }
     else
     {
