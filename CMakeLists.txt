@@ -24,6 +24,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_subdirectory(sinet)
 
 # uncomment when test
+target_compile_definitions(sinet PRIVATE ENABLE_DEBUG=1)
 add_executable(sinet_test test/test.cpp)
 target_link_libraries(sinet_test sinet)
 

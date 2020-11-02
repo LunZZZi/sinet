@@ -4,4 +4,5 @@ add_library(sinet
     channel.cpp
     selector.cpp
     eventloop.cpp
+    log.cpp
 )

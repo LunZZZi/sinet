@@ -4,17 +4,29 @@
 namespace sinet
 {
 
+class EventLoop;
+class Buffer;
+
 class Channel {
 public:
-    Channel() {}
-    void bind();
+    Channel(EventLoop* loop, Buffer* buf): eventLoop(loop), serverChannel(false), buffer(buf) {}
+    void bind(int port);
     void listen();
     void accept();
     void handle(int revents);
+    void setServerChannel() { serverChannel = true; };
+    void setDescriptor(int fd) { descriptor = fd; };
+    void setEvents(int evt) { events = evt; }
     int getDescriptor() const { return descriptor; }
+    int getEvents() { return events; };
 private:
+    void error(const char* msg);
+
     int descriptor;
-    // int events;
+    int events;
+    EventLoop* eventLoop;
+    bool serverChannel;
+    Buffer* buffer;
 };
 
 } // namespace sinet

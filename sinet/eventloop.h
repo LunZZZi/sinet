@@ -12,18 +12,15 @@ class EventLoop {
 public:
     void init();
     void run();
-    const std::map<int, Channel>& getChannels() const { return channels; }
-    void addChannel(int fd, const Channel& ch);
+    const std::map<int, Channel*>& getChannels() const { return channels; }
+    void addChannel(int fd, Channel* ch);
+    void removeChannel(int fd);
     void dispatch(int fd, int revents);
 private:
-    std::map<int, Channel> channels;
+    std::map<int, Channel*> channels;
     Selector* selector;
+    bool isStopped;
 };
-
-inline void EventLoop::addChannel(int fd, const Channel& ch)
-{
-    channels[fd] = ch;
-}
 
 }
 
