@@ -9,6 +9,8 @@ namespace sinet {
 
 class EventLoop {
 public:
+    EventLoop(Selector* s): selector(s) {}
+
     void init();
     void run();
     // const std::map<int, Channel*>& getChannels() const { return channels; }
@@ -17,7 +19,7 @@ public:
     void dispatch(int fd, int revents);
 private:
     std::map<int, std::unique_ptr<Channel>> channels;
-    std::unique_ptr<Selector> selector;
+    Selector* selector;
     bool isStopped;
 };
 

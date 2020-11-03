@@ -13,14 +13,17 @@ void EventLoop::init()
     channel->bind(9877);
     channel->listen();
     channel->setEvents(POLLRDNORM);
-    selector = std::make_unique<Selector>(this);
     addChannel(channel->getDescriptor(), std::move(channel));
 }
 
 void EventLoop::run()
 {
     while (!isStopped) {
-        selector->select();
+        auto fds = selector->select();
+        for (auto it = fds.begin(); it != fds.end(); it++) {
+            printf("dispatch %d %d\n", it->fd, it->revents);
+            dispatch(it->fd, it->revents);
+        }
     }
 }
 

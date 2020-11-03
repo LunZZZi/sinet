@@ -27,7 +27,7 @@ void Selector::remove(int fd)
     }
 }
 
-void Selector::select()
+std::vector<pollfd> Selector::select()
 {
     size_t size = eventSet.size();
     debug("select size %zu\n", size);
@@ -37,11 +37,15 @@ void Selector::select()
         fprintf(stderr, "poll error\n");
         exit(-1);
     }
+
+    std::vector<pollfd> result;
     for (size_t it = 0; it != size; it++) {
-        if (eventSet[it].revents & POLLRDNORM) {
-            eventLoop->dispatch(eventSet[it].fd, eventSet[it].revents);
+        if (eventSet[it].fd && (eventSet[it].revents & POLLRDNORM)) {
+            result.push_back(eventSet[it]);
         }
     }
+
+    return result;
 }
 
 }

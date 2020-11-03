@@ -7,16 +7,13 @@
 namespace sinet
 {
 
-class EventLoop;
-
 class Selector {
 public:
-    Selector(EventLoop* loop): eventLoop(loop) {}
+    Selector() {}
     void add(int fd, int events);
     void remove(int fd);
-    void select();
+    std::vector<pollfd> select();
 private:
-    EventLoop* eventLoop;
     std::vector<pollfd> eventSet;
 };
 
