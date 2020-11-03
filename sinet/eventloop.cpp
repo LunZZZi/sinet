@@ -6,16 +6,6 @@
 namespace sinet
 {
 
-void EventLoop::init()
-{
-    std::unique_ptr<Channel> channel = std::make_unique<Channel>(this, std::make_unique<Buffer>());
-    channel->setServerChannel();
-    channel->bind(9877);
-    channel->listen();
-    channel->setEvents(POLLRDNORM);
-    addChannel(channel->getDescriptor(), std::move(channel));
-}
-
 void EventLoop::run()
 {
     while (!isStopped) {

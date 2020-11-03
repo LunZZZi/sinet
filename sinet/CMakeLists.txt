@@ -5,4 +5,6 @@ add_library(sinet
     selector.cpp
     eventloop.cpp
     log.cpp
+    tcp_server.cpp
+    channel_handler.cpp
 )

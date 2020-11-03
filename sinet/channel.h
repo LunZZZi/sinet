@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "buffer.h"
+#include "channel_handler.h"
 
 namespace sinet
 {
@@ -11,25 +12,18 @@ class EventLoop;
 
 class Channel {
 public:
-    Channel(EventLoop* loop, std::unique_ptr<Buffer> buf)
-        : eventLoop(loop), serverChannel(false), buffer(std::move(buf)) {}
-    void bind(int port);
-    void listen();
-    void accept();
+    Channel(int _fd, int _events, bool _server, ChannelHandler handler)
+        : descriptor(_fd), events(_events), serverChannel(_server), m_handler(handler) {}
     void handle(int revents);
     void setServerChannel() { serverChannel = true; };
-    void setDescriptor(int fd) { descriptor = fd; };
-    void setEvents(int evt) { events = evt; }
     int getDescriptor() const { return descriptor; }
     int getEvents() { return events; };
+    bool getServerChannel() { return serverChannel; };
 private:
-    void error(const char* msg);
-
     int descriptor;
     int events;
-    EventLoop* eventLoop;
     bool serverChannel;
-    std::unique_ptr<Buffer> buffer;
+    ChannelHandler m_handler;
 };
 
 } // namespace sinet

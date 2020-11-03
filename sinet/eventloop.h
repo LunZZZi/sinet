@@ -11,7 +11,6 @@ class EventLoop {
 public:
     EventLoop(Selector* s): selector(s) {}
 
-    void init();
     void run();
     // const std::map<int, Channel*>& getChannels() const { return channels; }
     void addChannel(int fd, std::unique_ptr<Channel> ch);

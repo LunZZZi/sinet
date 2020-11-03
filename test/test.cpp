@@ -2,14 +2,18 @@
 #include "sinet/buffer.h"
 #include "sinet/eventloop.h"
 #include "sinet/selector.h"
+#include "sinet/tcp_server.h"
+
+using namespace sinet;
 
 int main(int argc, char const *argv[])
 {
-    sinet::UNUSED(argc);
-    sinet::UNUSED(argv);
-    sinet::Selector selector;
-    sinet::EventLoop loop(&selector);
-    loop.init();
+    UNUSED(argc);
+    UNUSED(argv);
+    Selector selector;
+    EventLoop loop(&selector);
+    TCPServer server(&loop);
+    server.start(9877);
     loop.run();
     return 0;
 }
